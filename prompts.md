@@ -12,3 +12,28 @@
 - How to protect the checkout route so only logged-in users can access it
 - How to improve folder structure as the project grows
 - How to prepare this React + Vite app for deployment on Vercel
+
+- How to migrate cart logic from context-style thinking to Redux Toolkit slices cleanly
+- How to write memoized selectors for cart totals and item counts with createSelector
+- How to prevent unnecessary re-renders in Shop page filters using useMemo and useCallback
+- How to debounce product search input for better performance on large product lists
+- How to keep min and max price filters in sync with dynamic API price ranges
+- How to handle API failures gracefully with retry and fallback UI on Shop and Product pages
+- How to add skeleton loaders for product cards and product detail sections
+- How to normalize product API responses for safer rendering when fields are missing
+- How to improve UX when product images fail to load (fallback image strategy)
+- How to persist and restore theme mode and cart state without hydration issues
+- How to redirect users back to the original route after successful login
+- How to show route-level loading indicators during navigation in React Router
+- How to disable checkout submit button until form validation passes
+- How to add client-side validation messages for card number, expiry, and CVV fields
+- How to structure reusable form input components for checkout and contact pages
+- How to add toast notifications instead of alert for add-to-cart and order placement feedback
+- How to write unit tests for Redux slices (cartSlice, filtersSlice, themeSlice)
+- How to test ProtectedRoute behavior with React Testing Library
+- How to add integration tests for cart flow: add item, update quantity, checkout
+- How to improve accessibility for navbar, forms, and cart controls (ARIA, labels, keyboard)
+- How to optimize bundle size with code splitting for route-based pages
+- How to add environment-based API URL configuration for dev and production
+- How to add analytics events for key actions like add-to-cart and place-order
+- How to set up CI checks for lint, build, and tests before deployment
