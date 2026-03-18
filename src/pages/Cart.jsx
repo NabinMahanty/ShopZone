@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearCart,
+  removeFromCart,
+  selectCartItems,
+  selectCartTotal,
+  updateQuantity,
+} from '../store/slices/cartSlice';
 import './Cart.css';
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } =
-    useCart();
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal);
 
   if (cart.length === 0) {
     return (
@@ -23,7 +31,7 @@ const Cart = () => {
     <div className="cart-page">
       <div className="cart-header">
         <h1>Shopping Cart</h1>
-        <button onClick={clearCart} className="clear-cart-button">
+        <button onClick={() => dispatch(clearCart())} className="clear-cart-button">
           Clear Cart
         </button>
       </div>
@@ -46,14 +54,28 @@ const Cart = () => {
 
               <div className="item-quantity">
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        productId: item.id,
+                        quantity: item.quantity - 1,
+                      }),
+                    )
+                  }
                   className="quantity-button"
                 >
                   -
                 </button>
                 <span className="quantity">{item.quantity}</span>
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        productId: item.id,
+                        quantity: item.quantity + 1,
+                      }),
+                    )
+                  }
                   className="quantity-button"
                 >
                   +
@@ -65,7 +87,7 @@ const Cart = () => {
                   ${(item.price * item.quantity).toFixed(2)}
                 </p>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => dispatch(removeFromCart(item.id))}
                   className="remove-button"
                 >
                   Remove
@@ -80,7 +102,7 @@ const Cart = () => {
           
           <div className="summary-row">
             <span>Items ({cart.reduce((sum, item) => sum + item.quantity, 0)})</span>
-            <span>${getCartTotal().toFixed(2)}</span>
+            <span>${cartTotal.toFixed(2)}</span>
           </div>
 
           <div className="summary-row">
@@ -90,14 +112,14 @@ const Cart = () => {
 
           <div className="summary-row">
             <span>Tax (estimated)</span>
-            <span>${(getCartTotal() * 0.1).toFixed(2)}</span>
+            <span>${(cartTotal * 0.1).toFixed(2)}</span>
           </div>
 
           <div className="summary-divider"></div>
 
           <div className="summary-row total">
             <span>Total</span>
-            <span>${(getCartTotal() * 1.1).toFixed(2)}</span>
+            <span>${(cartTotal * 1.1).toFixed(2)}</span>
           </div>
 
           <Link to="/checkout" className="checkout-button">

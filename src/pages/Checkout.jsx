@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../context/AuthContext';
+import { clearCart, selectCartItems, selectCartTotal } from '../store/slices/cartSlice';
 import './Checkout.css';
 
 const Checkout = () => {
-  const { cart, getCartTotal, clearCart } = useCart();
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -13,7 +16,7 @@ const Checkout = () => {
     
     // Simulate order placement
     alert('Order placed successfully! 🎉\n\nThank you for shopping with ShopZone!');
-    clearCart();
+    dispatch(clearCart());
     navigate('/');
   };
 
@@ -120,7 +123,7 @@ const Checkout = () => {
             </section>
 
             <button type="submit" className="place-order-button">
-              Place Order - ${(getCartTotal() * 1.1).toFixed(2)}
+              Place Order - ${(cartTotal * 1.1).toFixed(2)}
             </button>
           </form>
         </div>
@@ -148,7 +151,7 @@ const Checkout = () => {
           <div className="summary-totals">
             <div className="summary-row">
               <span>Subtotal</span>
-              <span>${getCartTotal().toFixed(2)}</span>
+              <span>${cartTotal.toFixed(2)}</span>
             </div>
             <div className="summary-row">
               <span>Shipping</span>
@@ -156,11 +159,11 @@ const Checkout = () => {
             </div>
             <div className="summary-row">
               <span>Tax</span>
-              <span>${(getCartTotal() * 0.1).toFixed(2)}</span>
+              <span>${(cartTotal * 0.1).toFixed(2)}</span>
             </div>
             <div className="summary-row total">
               <span>Total</span>
-              <span>${(getCartTotal() * 1.1).toFixed(2)}</span>
+              <span>${(cartTotal * 1.1).toFixed(2)}</span>
             </div>
           </div>
         </div>

@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/slices/cartSlice';
 import './Product.css';
 
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const dispatch = useDispatch();
   
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,11 +15,7 @@ const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
 
-  useEffect(() => {
-    fetchProduct();
-  }, [id]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -34,10 +31,14 @@ const Product = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
 
   const handleAddToCart = () => {
-    addToCart(product);
+    dispatch(addToCart(product));
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 3000);
   };

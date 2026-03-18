@@ -1,12 +1,15 @@
 import { Link, NavLink } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../context/AuthContext';
+import { selectCartItemsCount } from '../store/slices/cartSlice';
+import { selectThemeMode, toggleTheme } from '../store/slices/themeSlice';
 import './Navbar.css';
 
 const Navbar = () => {
-  const { getCartItemsCount } = useCart();
+  const dispatch = useDispatch();
   const { isAuthenticated, user, logout } = useAuth();
-  const cartCount = getCartItemsCount();
+  const cartCount = useSelector(selectCartItemsCount);
+  const themeMode = useSelector(selectThemeMode);
 
   return (
     <nav className="navbar">
@@ -43,6 +46,15 @@ const Navbar = () => {
         </ul>
 
         <div className="navbar-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={() => dispatch(toggleTheme())}
+            aria-label="Toggle theme"
+          >
+            {themeMode === 'light' ? '🌙 Dark' : '☀️ Light'}
+          </button>
+
           <NavLink
             to="/cart"
             className={({ isActive }) =>
